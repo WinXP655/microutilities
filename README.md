@@ -9,6 +9,7 @@ Utilities in repository:
 - Run As System: elevate any app to SYSTEM level. Grants the highest level of privileges. Do not misuse.
 - File Tool: multi-purpose file manipulation tool.
 - Tiny Shot: minimalistic screenshot tool.
-- Colorizer: changes your system colors to random. Includes legacy (HKCU\Control Panel\Colors), Aero (HKCU\SOFTWARE\Microsoft\Windows\DWM) and UWP/Metro accent.
+- Colorizer: changes your system colors to random.
+  Includes legacy (HKCU\Control Panel\Colors), Aero (HKCU\SOFTWARE\Microsoft\Windows\DWM) and UWP/Metro accent color. Re-logon to apply completely.
 
 Feel free to modify it as you want.
