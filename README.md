@@ -13,5 +13,6 @@ Utilities in repository:
   Includes legacy (HKCU\Control Panel\Colors), Aero (HKCU\SOFTWARE\Microsoft\Windows\DWM) and UWP/Metro accent color. Re-logon to apply completely.
 - Clicker: simple clicker game. Press Space to increase counter.
 - Fish: draws fish.
+- TrustedInstaller Run: same as System, except running as TrustedInstaller.
 
 Feel free to modify it as you want.
