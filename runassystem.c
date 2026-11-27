@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
     STARTUPINFOW si = { sizeof(STARTUPINFOW) };
 	PROCESS_INFORMATION pi;
 
-	if (!CreateProcessWithTokenW(hDupToken, LOGON_WITH_PROFILE, NULL,L commandLine, 0, NULL, NULL, &si, &pi)) {
+	if (!CreateProcessWithTokenW(hDupToken, LOGON_WITH_PROFILE, NULL, commandLine, 0, NULL, NULL, &si, &pi)) {
 		DWORD error = GetLastError();
 		wprintf(L"[!] CreateProcessWithTokenW failed (LastError: %d)\n", error);
 		free(commandLine);
