@@ -1,8 +1,3 @@
-/*
- * Advanced File Tool for Windows
- * Compile: gcc filetool.c -o filetool.exe -lbcrypt
- */
-
 #define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
 #include <stdio.h>
@@ -12,7 +7,7 @@
 
 #pragma comment(lib, "bcrypt.lib")
 
-// === FUNCTION PROTOTYPES (REQUIRED IN C) ===
+// === FUNCTION PROTOTYPES ===
 int cmd_info(const wchar_t* wpath);
 int cmd_create(const wchar_t* wpath, const char* size_str);
 int cmd_clean(const wchar_t* wpath);
@@ -32,8 +27,7 @@ void WideToUtf8(const wchar_t* wstr, char* astr, int size) {
 void PrintFileTime(FILETIME ft) {
     SYSTEMTIME st;
     FileTimeToSystemTime(&ft, &st);
-    printf("%04d-%02d-%02d %02d:%02d:%02d", st.wYear, st.wMonth, st.wDay,
-           st.wHour, st.wMinute, st.wSecond);
+    printf("%04d-%02d-%02d %02d:%02d:%02d", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
 }
 
 int GetFileAttrsAndData(const wchar_t* wpath, DWORD* attrs, WIN32_FILE_ATTRIBUTE_DATA* fad) {
@@ -72,7 +66,6 @@ void print_file_info(const wchar_t* wpath, const char* label) {
 }
 
 // === COMMAND IMPLEMENTATIONS ===
-
 int cmd_info(const wchar_t* wpath) {
     DWORD attrs;
     WIN32_FILE_ATTRIBUTE_DATA fad;
@@ -94,12 +87,12 @@ int cmd_info(const wchar_t* wpath) {
     size.HighPart = fad.nFileSizeHigh;
 
     char attrStr[256] = "";
-    if (attrs & FILE_ATTRIBUTE_READONLY)      strcat(attrStr, "READONLY ");
-    if (attrs & FILE_ATTRIBUTE_HIDDEN)       strcat(attrStr, "HIDDEN ");
-    if (attrs & FILE_ATTRIBUTE_SYSTEM)       strcat(attrStr, "SYSTEM ");
-    if (attrs & FILE_ATTRIBUTE_ARCHIVE)      strcat(attrStr, "ARCHIVE ");
-    if (attrs & FILE_ATTRIBUTE_COMPRESSED)   strcat(attrStr, "COMPRESSED ");
-    if (attrs & FILE_ATTRIBUTE_ENCRYPTED)    strcat(attrStr, "ENCRYPTED ");
+    if (attrs & FILE_ATTRIBUTE_READONLY) strcat(attrStr, "READONLY ");
+    if (attrs & FILE_ATTRIBUTE_HIDDEN) strcat(attrStr, "HIDDEN ");
+    if (attrs & FILE_ATTRIBUTE_SYSTEM) strcat(attrStr, "SYSTEM ");
+    if (attrs & FILE_ATTRIBUTE_ARCHIVE) strcat(attrStr, "ARCHIVE ");
+    if (attrs & FILE_ATTRIBUTE_COMPRESSED) strcat(attrStr, "COMPRESSED ");
+    if (attrs & FILE_ATTRIBUTE_ENCRYPTED) strcat(attrStr, "ENCRYPTED ");
 
     printf("Filename:   %s\n", fnameA);
     printf("Type:       File\n");
@@ -251,8 +244,7 @@ int cmd_hash(const wchar_t* wpath) {
     BYTE* buffer = malloc(65536);
 
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA256_ALGORITHM, NULL, 0);
-    if (BCRYPT_SUCCESS(status))
-        status = BCryptCreateHash(hAlg, &hHash, NULL, 0, NULL, 0, 0);
+    if (BCRYPT_SUCCESS(status)) status = BCryptCreateHash(hAlg, &hHash, NULL, 0, NULL, 0, 0);
     if (BCRYPT_SUCCESS(status)) {
         DWORD bytesRead;
         while (ReadFile(hFile, buffer, 65536, &bytesRead, NULL) && bytesRead > 0) {
@@ -448,7 +440,6 @@ int cmd_hexpart(const wchar_t* wpath, const char* start_str, const char* end_str
 
     ULONGLONG length = end - start;
 
-    // Seek to start
     LARGE_INTEGER offset;
     offset.QuadPart = start;
     if (!SetFilePointerEx(hFile, offset, NULL, FILE_BEGIN)) {
@@ -457,7 +448,6 @@ int cmd_hexpart(const wchar_t* wpath, const char* start_str, const char* end_str
         return 1;
     }
 
-    // Read and display in chunks
     const DWORD CHUNK_SIZE = 4096;
     char* buf = malloc(CHUNK_SIZE);
     if (!buf) {
@@ -536,7 +526,7 @@ int main(int argc, char* argv[]) {
     }
     else if (strcmp(cmd, "/create") == 0) {
         if (argc != 4) return 1;
-        MultiByteToWideChar(CP_UTF8, 0, argv[2], -1, wpath1, MAX_PATH); // ✅ FIXED: was 'wpath'
+        MultiByteToWideChar(CP_UTF8, 0, argv[2], -1, wpath1, MAX_PATH);
         return cmd_create(wpath1, argv[3]);
     }
     else if (strcmp(cmd, "/clean") == 0) {
