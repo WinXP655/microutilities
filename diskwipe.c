@@ -7,7 +7,7 @@
 char GetSystemDriveLetter(void) {
     char sysRoot[MAX_PATH];
     GetSystemDirectoryA(sysRoot, MAX_PATH);
-    return sysRoot[0]; // первая буква
+    return sysRoot[0];
 }
 
 int IsSystemDrive(char driveLetter) {
@@ -90,18 +90,14 @@ int WipePartition(char driveLetter) {
     }
     
     DISK_GEOMETRY dg;
-    if (DeviceIoControl(hVol, IOCTL_DISK_GET_DRIVE_GEOMETRY,
-                        NULL, 0, &dg, sizeof(dg), &bytesRet, NULL)) {
-        // используем dg.BytesPerSector
-    } else {
+    if (!DeviceIoControl(hVol, IOCTL_DISK_GET_DRIVE_GEOMETRY, NULL, 0, &dg, sizeof(dg), &bytesRet, NULL)) {
         dg.BytesPerSector = 512;
     }
     DWORD sectorSize = dg.BytesPerSector;
     LONGLONG totalSectors = totalBytes / sectorSize;
     
     printf("\nStart wiping of %c:\n", driveLetter);
-    printf("Size: %I64u MB, sectors: %I64u, sector size: %u bytes\n",
-           totalBytes / (1024*1024), totalSectors, sectorSize);
+    printf("Size: %I64u MB, sectors: %I64u, sector size: %u bytes\n", totalBytes / (1024*1024), totalSectors, sectorSize);
     printf("WARNING: ALL DATA ON %c: WILL BE PERMANENTLY LOST!\n", driveLetter);
     printf("To continue, enter and press ENTER: ERASE ALL\n>> ");
     
