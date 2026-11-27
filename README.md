@@ -5,7 +5,7 @@ Utilities in repository:
 - Disk Wipe: disk wiping utility. Double-check drive letter before starting.
 - File Reader: simple file reading utility. Read any file as text.
 - SetRes: screen resolution changer in console.
-- Mem Dump: memory dumpng utility.
+- Mem Dump: memory dumping utility.
 - Run As System: elevate any app to SYSTEM level. Grants the highest level of privileges. Do not misuse.
 - File Tool: multi-purpose file manipulation tool.
 - Tiny Shot: minimalistic screenshot tool.
