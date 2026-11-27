@@ -158,7 +158,7 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	if (!CreateProcessWithTokenW(		hDupTiToken, 0, NULL, cmdLine, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
+	if (!CreateProcessWithTokenW(hDupTiToken, 0, NULL, cmdLine, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi)) {
 		printf("[!] CreateProcessWithTokenW failed. Error: %lu\n", GetLastError());
 		CloseHandle(hDupTiToken);
 		return 1;
