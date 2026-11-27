@@ -24,7 +24,7 @@ void LoadFile(const char *path) {
         MessageBoxA(GetParent(hEdit), msg, "TinyView", MB_OK | MB_ICONERROR);
         CloseHandle(f);
         return;
-    } else if (size >= (1024 * 1024 * 1024)) {  // 1GB
+    } else if (size >= (1024 * 1024 * 1024)) {
         char msg[256];
         sprintf(msg, 
             "Warning! You're close to a max file size that can be handled by application.\n\n"
@@ -32,8 +32,7 @@ void LoadFile(const char *path) {
             "Performance will be extremely slow and application may become unstable.",
             (double)size / (1024 * 1024 * 1024));
         
-        if (MessageBoxA(GetParent(hEdit), msg, "TinyView", 
-                       MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES) {
+        if (MessageBoxA(GetParent(hEdit), msg, "TinyView", MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES) {
             CloseHandle(f);
             return;
         }
@@ -46,8 +45,7 @@ void LoadFile(const char *path) {
             "Do you want to continue anyways?",
             (double)size / (1024 * 1024));
         
-        if (MessageBoxA(GetParent(hEdit), msg, "TinyView", 
-                       MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES) {
+        if (MessageBoxA(GetParent(hEdit), msg, "TinyView", MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES) {
             CloseHandle(f);
             return;
         }
@@ -72,7 +70,6 @@ void LoadFile(const char *path) {
     char *out = 0;
 
     if (r >= 2 && ((b[0] == 0xFF && b[1] == 0xFE) || (b[0] == 0xFE && b[1] == 0xFF))) {
-        // UTF-16 → ANSI
         WCHAR *w = (WCHAR*)(b + 2);
         int len = (r - 2) / 2;
         out = GlobalAlloc(0, len * 3 + 1);
@@ -92,7 +89,6 @@ void LoadFile(const char *path) {
         SetWindowTextA(hEdit, out);
         GlobalFree(out);
         
-        // Update window title with filename
         char title[MAX_PATH + 20];
         const char* filename = strrchr(path, '\\') ? strrchr(path, '\\') + 1 : path;
         sprintf(title, "TinyView - %s", filename);
@@ -116,7 +112,6 @@ LRESULT CALLBACK WndProc(HWND w, UINT m, WPARAM a, LPARAM l) {
             ES_MULTILINE | ES_READONLY, 
             0, 0, 0, 0, w, 0, 0, 0);
         
-        // Enable drag-and-drop
         DragAcceptFiles(w, TRUE);
         break;
     }
@@ -129,7 +124,6 @@ LRESULT CALLBACK WndProc(HWND w, UINT m, WPARAM a, LPARAM l) {
         char path[MAX_PATH];
         HDROP hDrop = (HDROP)a;
         
-        // Get the first dropped file
         if (DragQueryFileA(hDrop, 0, path, MAX_PATH) > 0) {
             LoadFile(path);
         }
@@ -174,15 +168,11 @@ int WINAPI WinMain(HINSTANCE h, HINSTANCE p, LPSTR cmd, int s) {
     
     ShowWindow(w, s);
     
-    // Load file from command line if provided
     if (cmd && *cmd) {
-        // Skip past the program name if it's the first argument
         if (cmd[0] == '\"') {
-            // Quoted filename - find closing quote
             char* endQuote = strchr(cmd + 1, '\"');
             if (endQuote) cmd = endQuote + 1;
         } else {
-            // Unquoted filename - find space
             char* space = strchr(cmd, ' ');
             if (space) cmd = space;
         }
